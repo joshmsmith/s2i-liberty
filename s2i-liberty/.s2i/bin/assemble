@@ -1,0 +1,18 @@
+#!/bin/bash -e
+#
+# S2I assemble script for the 's2i-liberty' image.
+# The 'assemble' script builds your application source so that it is ready to run.
+#
+# For more information refer to the documentation:
+#	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
+#
+
+echo "---> Building application source..."
+cd /tmp/src/
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
+mvn clean package -P openshift
+
+echo "---> Copy output to dropins folder"
+cp target/*.war /opt/ibm/wlp/usr/servers/defaultServer/dropins/
+
+echo "---> COMPLETE"
